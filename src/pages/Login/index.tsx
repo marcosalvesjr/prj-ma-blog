@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { login } from "@/lib/supabase";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormValues } from "./loginSchema";
 import { useState } from "react";
-import { set } from "zod";
+
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +92,7 @@ export default function Login() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full mt-3" disabled={isLoading}>
               {isLoading ? "Carregando..." : "Entrar"}
             </Button>
           </CardFooter>
