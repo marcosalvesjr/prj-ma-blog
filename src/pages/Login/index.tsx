@@ -1,7 +1,14 @@
-import React from 'react'
+import Navbar from "@/components/Navbar";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   return (
-    <div>Login</div>
-  )
+    <div>
+      Login
+      <Link to={"/"}>
+        <Button variant={"secondary"}>Entrar</Button>
+      </Link>
+    </div>
+  );
 }

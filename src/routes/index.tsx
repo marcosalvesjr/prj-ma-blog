@@ -5,19 +5,26 @@ import { createBrowserRouter } from "react-router-dom";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import PostDetail from "../pages/PostDetail";
+import DefaultLayout from "@/layouts/DefaultLayout";
 
 // 3. Criamos a configuração das rotas
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <DefaultLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/post/:slug", // O ':' indica que o 'slug' é um parâmetro dinâmico
+        element: <PostDetail />,
+      },
+    ],
   },
   {
     path: "/login",
     element: <Login />,
-  },
-  {
-    path: "/post/:slug", // O ':' indica que o 'slug' é um parâmetro dinâmico
-    element: <PostDetail />,
   },
 ]);
