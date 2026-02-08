@@ -14,6 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormValues } from "./loginSchema";
 import { useState } from "react";
+import { set } from "zod";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,14 +29,22 @@ export default function Login() {
   });
 
   const handleLogin = async () => {
-    const { data, error } = await login(
-      form.getValues("email"),
-      form.getValues("password"),
-    );
-    if (error) {
+    setIsLoading(true);
+    try {
+      const { data, error } = await login(
+        form.getValues("email"),
+        form.getValues("password"),
+      );
+      if (error) {
+        alert(error);
+        setIsLoading(false);
+      } else if (data.session) {
+        setIsLoading(false);
+        navigate("/");
+      }
+    } catch (error) {
       alert(error);
-    } else if (data.session) {
-      navigate("/");
+      setIsLoading(false);
     }
   };
 
