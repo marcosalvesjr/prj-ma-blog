@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import PostDetail from "../pages/PostDetail";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import { ProtectedRoute } from "./protectedRoute";
+import PublicRoute from "./publicRoute";
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: "/login",
-    element: <Login />,
+    element: <PublicRoute />,
+    children: [{ path: "/login", element: <Login /> }],
   },
 ]);

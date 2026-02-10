@@ -1,34 +1,25 @@
-import { useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { supabase } from "@/lib/supabase"; // Seu cliente do Supabase
-import type { Session } from "@supabase/supabase-js";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export function ProtectedRoute() {
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, isLoading } = useAuth();
+  const location = useLocation();
 
-  useEffect(() => {
-    // Busca a sessão inicial
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
-    });
-
-    // Ouve mudanças na autenticação (login/logout)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  if (loading) return <div>Carregando...</div>;
-
-  // Se não houver sessão, manda para o login
-  if (!session) {
-    return <Navigate to="/login" replace />;
+  // 1. Enquanto o Contexto está verificando o Supabase, mostramos um loading
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
   }
 
-  // Se houver sessão, renderiza as rotas filhas (Outlet)
+  // 2. Se não houver usuário, redireciona para o login
+  // O 'state' serve para sabermos de onde o usuário veio e mandá-lo de volta após o login
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  // 3. Se estiver logado, renderiza o conteúdo da rota
   return <Outlet />;
 }

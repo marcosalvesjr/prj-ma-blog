@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { login, supabase } from "@/lib/supabase";
@@ -13,7 +8,10 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   signOut: () => Promise<void>;
-  signIn: (params: { email: string; password: string }) => Promise<{ success: boolean; error: string | null }>;
+  signIn: (params: {
+    email: string;
+    password: string;
+  }) => Promise<{ success: boolean; error: string | null }>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -46,14 +44,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     fetchSession();
 
     // Escutar mudanças de autenticação
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('Auth state changed:', event, session);
-        setSession(session);
-        setUser(session?.user ?? null);
-        setIsLoading(false);
-      }
-    );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state changed:", event, session);
+      setSession(session);
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
 
     // Limpar subscription ao desmontar
     return () => subscription.unsubscribe();
@@ -87,7 +85,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    setIsLoading(true);
+    try {
+      await supabase.auth.signOut();
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
