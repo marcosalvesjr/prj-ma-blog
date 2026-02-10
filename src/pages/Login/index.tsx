@@ -8,17 +8,17 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { login } from "@/lib/supabase";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormValues } from "./loginSchema";
 import { useState } from "react";
-
+import { useAuth } from "@/context/AuthContext";
 
 export default function Login() {
-  const [isLoading, setIsLoading] = useState(false);
+  const { signIn, isLoading } = useAuth();
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -28,23 +28,14 @@ export default function Login() {
     },
   });
 
-  const handleLogin = async () => {
-    setIsLoading(true);
-    try {
-      const { data, error } = await login(
-        form.getValues("email"),
-        form.getValues("password"),
-      );
-      if (error) {
-        alert(error);
-        setIsLoading(false);
-      } else if (data.session) {
-        setIsLoading(false);
-        navigate("/");
-      }
-    } catch (error) {
-      alert(error);
-      setIsLoading(false);
+  const handleLogin = async (values: LoginFormValues) => {
+    setError(null);
+    const result = await signIn(values);
+    
+    if (result.success) {
+      navigate("/");
+    } else {
+      setError(result.error || "Erro ao fazer login");
     }
   };
 
@@ -59,6 +50,11 @@ export default function Login() {
         </CardHeader>
         <form onSubmit={form.handleSubmit(handleLogin)}>
           <CardContent className="space-y-4">
+            {error && (
+              <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                {error}
+              </div>
+            )}
             <div className="space-y-2">
               <label htmlFor="email">Email</label>
               <Controller
@@ -74,8 +70,14 @@ export default function Login() {
                   />
                 )}
               />
+              {form.formState.errors.email && (
+                <p className="text-sm text-red-600">
+                  {form.formState.errors.email.message}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
+              <label htmlFor="password">Senha</label>
               <Controller
                 control={form.control}
                 name="password"
@@ -89,6 +91,11 @@ export default function Login() {
                   />
                 )}
               />
+              {form.formState.errors.password && (
+                <p className="text-sm text-red-600">
+                  {form.formState.errors.password.message}
+                </p>
+              )}
             </div>
           </CardContent>
           <CardFooter>
