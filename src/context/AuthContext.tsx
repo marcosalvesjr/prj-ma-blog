@@ -25,12 +25,12 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // Buscar sessão inicial
     const fetchSession = async () => {
-      setIsLoading(true);
+
       const { data, error } = await supabase.auth.getSession();
       if (error) {
         console.error(error);
