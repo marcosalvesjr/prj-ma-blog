@@ -61,8 +61,6 @@ export default function NewPost() {
           navigate("/");
         },
       });
-
-      navigate("/");
     }
   };
 
@@ -123,23 +121,6 @@ export default function NewPost() {
               )}
             </div>
 
-            {/* Slug */}
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700 ml-1">
-                URL Amigável (Slug)
-              </label>
-              <Controller
-                control={form.control}
-                name="slug"
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    readOnly
-                    className="h-11 bg-gray-50 text-gray-500 cursor-not-allowed border-dashed"
-                  />
-                )}
-              />
-            </div>
 
             {/* Conteúdo */}
             <div className="space-y-2">
@@ -168,7 +149,7 @@ export default function NewPost() {
           <CardFooter className="pb-8">
             <Button
               type="submit"
-              className="w-full h-12 text-base font-semibold bg-blue-600 hover:bg-blue-700 transition-all shadow-md shadow-blue-100"
+              className="mt-5 w-full h-12 text-base font-semibold bg-blue-600 hover:bg-blue-700 transition-all shadow-md shadow-blue-100"
               disabled={form.formState.isSubmitting}
             >
               {form.formState.isSubmitting ? (

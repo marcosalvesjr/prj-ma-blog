@@ -1,10 +1,9 @@
 import { MoonStar, LogOut, Code2 } from "lucide-react";
-import { SearchNavbar, type SearchNavbarProps } from "./components/SearchNavbar";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
-export default function Navbar(props:SearchNavbarProps) {
+export default function Navbar() {
   const navigate = useNavigate();
   const { signOut } = useAuth();
 
@@ -57,8 +56,12 @@ export default function Navbar(props:SearchNavbarProps) {
           <div className="h-6 w-[1px] bg-gray-200 hidden md:block" />
 
           <div className="flex items-center gap-3">
-
-            <Button variant="ghost" size="icon" className="text-gray-600">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gray-600"
+              onClick={() => alert("Função em desenvolvimento.")}
+            >
               <MoonStar className="h-5 w-5" />
             </Button>
 
