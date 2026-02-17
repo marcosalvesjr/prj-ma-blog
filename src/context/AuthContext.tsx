@@ -12,6 +12,11 @@ interface AuthContextType {
     email: string;
     password: string;
   }) => Promise<{ success: boolean; error: string | null }>;
+  signUp: (params: {
+    email: string;
+    password: string;
+    fullName: string;
+  }) => Promise<{ success: boolean; error: string | null }>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -20,6 +25,7 @@ const AuthContext = createContext<AuthContextType>({
   isLoading: false,
   signOut: async () => {},
   signIn: async () => ({ success: false, error: "Not implemented" }),
+  signUp: async () => ({ success: false, error: "Not implemented" }),
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -93,6 +99,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const signUp = async ({ email, password, fullName }: { email: string, password: string, fullName: string }) => {
+  setIsLoading(true);
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName, // Isso alimenta o metadata que a trigger usa!
+        }
+      }
+    });
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, error: null };
+  } catch (err) {
+    return { success: false, error: "Erro ao cadastrar" };
+  } finally {
+    setIsLoading(false);
+  }
+};
+
   return (
     <AuthContext.Provider
       value={{
@@ -101,6 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         signOut,
         signIn,
+        signUp,
       }}
     >
       {children}

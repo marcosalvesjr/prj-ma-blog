@@ -21,7 +21,17 @@ export default function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const { data, error } = await supabase.from("posts").select("*");
+        const { data, error } = await supabase
+          .from("posts")
+          .select(
+            `
+    *,
+    profiles (
+      full_name
+    )
+  `,
+          )
+          .order("created_at", { ascending: false });
         setPosts(data || []);
       } catch (error) {
         console.log(error);
@@ -30,8 +40,8 @@ export default function Home() {
       }
     };
     fetchPosts();
+    window.scrollTo(0, 0);
   }, []);
-
   const filteredPosts = useMemo(() => {
     let filtered = posts;
 

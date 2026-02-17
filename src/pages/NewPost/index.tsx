@@ -121,7 +121,6 @@ export default function NewPost() {
               )}
             </div>
 
-
             {/* Conteúdo */}
             <div className="space-y-2">
               <label className="text-sm font-semibold text-gray-700 ml-1">

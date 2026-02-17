@@ -7,6 +7,7 @@ import DefaultLayout from "@/layouts/DefaultLayout";
 import { ProtectedRoute } from "./protectedRoute";
 import PublicRoute from "./publicRoute";
 import NewPost from "@/pages/NewPost";
+import Register from "@/pages/Register";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },

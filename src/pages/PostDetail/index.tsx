@@ -6,14 +6,9 @@ import { ptBR } from "date-fns/locale";
 import { ArrowLeft, Calendar, User, Clock, Share2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import type { Post } from "@/components/Home";
 
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-  created_at: string;
-  author_name: string;
-}
+
 
 export default function PostDetail() {
   const { slug } = useParams();
@@ -25,7 +20,14 @@ export default function PostDetail() {
     async function fetchPost() {
       const { data, error } = await supabase
         .from("posts")
-        .select("*")
+        .select(
+          `
+    *,
+    profiles (
+      full_name
+    )
+  `,
+        )
         .eq("slug", slug)
         .single();
 
@@ -72,10 +74,10 @@ export default function PostDetail() {
           <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
-                {post.author_name?.charAt(0) || <User className="h-4 w-4" />}
+                {post.profiles?.full_name.charAt(0) || <User className="h-4 w-4" />}
               </div>
               <span className="font-semibold text-gray-900">
-                {post.author_name || "Autor do Blog"}
+                {post.profiles?.full_name || "Autor do Blog"}
               </span>
             </div>
 

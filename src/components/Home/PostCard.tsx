@@ -1,8 +1,14 @@
-
 import { Calendar, User, ArrowRight, Hash } from "lucide-react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Link } from 'react-router-dom';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -12,13 +18,11 @@ export interface Post {
   content: string;
   slug: string;
   created_at: string;
-  author_id: string;
+  profiles: {
+    full_name: string;
+  } | null;
 }
 
-interface PostCardProps {
-  post: Post
-  variant?: 'default' | 'featured'
-}
 
 export function PostCard({ post }: { post: Post }) {
   return (
@@ -33,7 +37,7 @@ export function PostCard({ post }: { post: Post }) {
             <Calendar className="h-3 w-3" />
             {format(new Date(post.created_at), "dd MMM yyyy", { locale: ptBR })}
           </div>
-          
+
           {/* Identificador de Slug visual (opcional) */}
           <div className="flex items-center gap-1 text-gray-400 text-xs italic">
             <Hash className="h-3 w-3" />
@@ -60,14 +64,14 @@ export function PostCard({ post }: { post: Post }) {
             <User className="h-4 w-4 text-indigo-600" />
           </div>
           <span className="text-xs font-semibold text-gray-700">
-            {post.author_id || "Autor do Blog"}
+            {post.profiles?.full_name || "Autor do Blog"}
           </span>
         </div>
 
         {/* Link de Ação */}
         <Link to={`/post/${post.slug}`} className="w-full">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="w-full border-blue-100 bg-blue-50/50 text-blue-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 group/btn transition-all font-bold"
           >
             Ler artigo completo
