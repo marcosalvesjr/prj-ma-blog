@@ -1,10 +1,10 @@
 import { MoonStar, LogOut, Code2 } from "lucide-react";
-import { SearchNavbar } from "./components/SearchNavbar";
+import { SearchNavbar, type SearchNavbarProps } from "./components/SearchNavbar";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
-export default function Navbar() {
+export default function Navbar(props:SearchNavbarProps) {
   const navigate = useNavigate();
   const { signOut } = useAuth();
 
@@ -57,7 +57,6 @@ export default function Navbar() {
           <div className="h-6 w-[1px] bg-gray-200 hidden md:block" />
 
           <div className="flex items-center gap-3">
-            <SearchNavbar />
 
             <Button variant="ghost" size="icon" className="text-gray-600">
               <MoonStar className="h-5 w-5" />

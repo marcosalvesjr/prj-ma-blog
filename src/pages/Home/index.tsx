@@ -13,10 +13,9 @@ import { supabase } from "@/lib/supabase";
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [isLoading, setIsLoading] = useState(true);
 
-  const isSearching = searchTerm !== "" || selectedCategory !== "Todos";
+  const isSearching = searchTerm !== "";
   const listTitle = isSearching ? "Resultados" : "Artigos Recentes";
 
   useEffect(() => {
@@ -43,20 +42,21 @@ export default function Home() {
     }
 
     return filtered;
-  }, [searchTerm, selectedCategory, posts]);
+  }, [searchTerm, posts]);
 
   return (
     <div className="min-h-screenbg-background">
       <HeroSection searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
       <div className="max-w-7xl mx-auto px-4 py-12">
+        {isLoading && <>Carregando</>}
         <PostList
           posts={filteredPosts}
           title={listTitle}
           showCount={isSearching}
         />
       </div>
-        <Newsletter />
+      <Newsletter />
     </div>
   );
 }
