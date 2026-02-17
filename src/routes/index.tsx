@@ -11,20 +11,20 @@ import Register from "@/pages/Register";
 
 export const router = createBrowserRouter([
   {
-    element: <ProtectedRoute />,
+    // Mudança: Deixamos o layout sem path fixo para ele não "roubar" as outras rotas
+    element: <DefaultLayout />,
     children: [
       {
-        // Mudança: Deixamos o layout sem path fixo para ele não "roubar" as outras rotas
-        element: <DefaultLayout />,
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/post/:slug",
+        element: <PostDetail />,
+      },
+      {
+        element: <ProtectedRoute />,
         children: [
-          {
-            path: "/",
-            element: <Home />,
-          },
-          {
-            path: "/post/:slug",
-            element: <PostDetail />,
-          },
           {
             path: "/new-post", // Definido explicitamente com a barra
             element: <NewPost />,

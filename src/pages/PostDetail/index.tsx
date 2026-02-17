@@ -105,7 +105,7 @@ export default function PostDetail() {
         </article>
 
         {/* Footer do Artigo */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-10">
           <div className="flex items-center gap-4">
             <Button variant="outline" size="sm" className="rounded-full">
               <Share2 className="mr-2 h-4 w-4" />

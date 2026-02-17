@@ -1,17 +1,17 @@
-import { MoonStar, LogOut, Code2 } from "lucide-react";
+import { MoonStar, LogOut, Code2, LogIn } from "lucide-react";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
 
   // Função para simular o SignOut
   const handleSignOut = () => {
     signOut();
     console.log("Sessão encerrada");
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -39,18 +39,20 @@ export default function Navbar() {
             >
               Home
             </button>
-            <button
-              onClick={() => navigate("/new-post")}
-              className="hover:text-blue-600 transition-colors"
-            >
-              Novo post
-            </button>
-            <span className="hover:text-blue-600 cursor-pointer transition-colors">
+            {user && (
+              <button
+                onClick={() => navigate("/new-post")}
+                className="hover:text-blue-600 transition-colors"
+              >
+                Novo post
+              </button>
+            )}
+            {/* <span className="hover:text-blue-600 cursor-pointer transition-colors">
               About
             </span>
             <span className="hover:text-blue-600 cursor-pointer transition-colors">
               Linkedin
-            </span>
+            </span> */}
           </div>
 
           <div className="h-6 w-[1px] bg-gray-200 hidden md:block" />
@@ -68,15 +70,27 @@ export default function Navbar() {
             <div className="h-6 w-[1px] bg-gray-200" />
 
             {/* Botão de Sign Out */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-2 h-9 px-4 font-medium"
-              onClick={handleSignOut}
-            >
-              <LogOut className="h-4 w-4" />
-              <span className="hidden sm:inline">Sair</span>
-            </Button>
+            {user ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 h-9 px-4 font-medium"
+                onClick={handleSignOut}
+              >
+                <LogOut className="h-4 w-4" color="#ff0000" />
+                <span className="hidden sm:inline text-red-600">Sair</span>
+              </Button>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 h-9 px-4 font-medium"
+                onClick={() => navigate("/login")}
+              >
+                <LogIn className="h-4 w-4" color="#155dfc" />
+                <span className="hidden sm:inline text-blue-600">Entrar</span>
+              </Button>
+            )}
           </div>
         </div>
       </div>
