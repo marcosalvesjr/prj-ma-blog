@@ -40,6 +40,12 @@ export default function Navbar() {
             >
               Home
             </button>
+            <button
+              onClick={() => navigate("/new-post")}
+              className="hover:text-blue-600 transition-colors"
+            >
+              Novo post
+            </button>
             <span className="hover:text-blue-600 cursor-pointer transition-colors">
               About
             </span>

@@ -9,9 +9,18 @@ import { Code2, ArrowLeft, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { postSchema, type PostFormValues } from "./schamas/postSchema";
 import { useAuth } from "@/context/AuthContext";
+import { Toast } from "radix-ui";
+import { toast } from "sonner";
 
 export default function NewPost() {
   const { user, isLoading: isAuthLoading } = useAuth();
@@ -43,8 +52,16 @@ export default function NewPost() {
     ]);
 
     if (error) {
-      alert("Erro ao publicar: " + error.message);
+      toast.error("Erro ao publicar: " + error.message);
     } else {
+      toast.success("Artigo publicado com sucesso!", {
+        description: "Redirecionando para home...",
+        duration: 2000,
+        onAutoClose: () => {
+          navigate("/");
+        },
+      });
+
       navigate("/");
     }
   };
@@ -55,7 +72,7 @@ export default function NewPost() {
         <CardHeader className="space-y-4 pt-8">
           {/* Logo & Voltar */}
           <div className="flex items-center justify-between">
-            <button 
+            <button
               onClick={() => navigate("/")}
               className="flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
             >

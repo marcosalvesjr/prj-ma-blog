@@ -5,7 +5,7 @@ export default function DefaultLayout() {
   return (
     <div className="max-w-7xlmin-h-screen bg-background">
       <Navbar /> 
-      <main className="container mx-auto py-6">
+      <main className=" mx-auto ">
         <Outlet /> {/* Aqui é onde as páginas (Home, Details) vão aparecer! */}
       </main>
     </div>

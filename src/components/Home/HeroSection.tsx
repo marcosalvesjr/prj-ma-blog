@@ -1,21 +1,22 @@
-import { Search } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface HeroSectionProps {
-  searchTerm: string
-  onSearchChange: (term: string) => void
+  searchTerm: string;
+  onSearchChange: (term: string) => void;
 }
 
 export function HeroSection({ searchTerm, onSearchChange }: HeroSectionProps) {
   return (
-    <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-16 px-4">
+    <section className=" w-full bg-gradient-to-br from-blue-50 to-indigo-100 py-16 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
             Bem-vindo ao <span className="text-blue-600">MA Blog</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Descubra artigos sobre desenvolvimento web, tecnologias modernas e melhores práticas
+            Descubra artigos sobre desenvolvimento web, tecnologias modernas e
+            melhores práticas
           </p>
         </div>
 
@@ -27,11 +28,11 @@ export function HeroSection({ searchTerm, onSearchChange }: HeroSectionProps) {
               placeholder="Pesquisar artigos..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-12 h-12 text-lg"
+              className="pl-12 h-12 text-lg bg-white"
             />
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

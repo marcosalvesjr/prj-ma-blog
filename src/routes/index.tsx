@@ -24,21 +24,21 @@ export const router = createBrowserRouter([
             path: "/post/:slug",
             element: <PostDetail />,
           },
+          {
+            path: "/new-post", // Definido explicitamente com a barra
+            element: <NewPost />,
+          },
         ],
-      },
-      {
-        path: "/new-post", // Definido explicitamente com a barra
-        element: <NewPost />,
       },
     ],
   },
   {
     element: <PublicRoute />,
     children: [
-      { 
-        path: "/login", 
-        element: <Login /> 
-      }
+      {
+        path: "/login",
+        element: <Login />,
+      },
     ],
   },
 ]);
