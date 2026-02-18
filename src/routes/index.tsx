@@ -8,6 +8,7 @@ import { ProtectedRoute } from "./protectedRoute";
 import PublicRoute from "./publicRoute";
 import NewPost from "@/pages/NewPost";
 import Register from "@/pages/Register";
+import PostEdit from "@/pages/PostEdit";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
             path: "/new-post", // Definido explicitamente com a barra
             element: <NewPost />,
           },
+          {
+            path: "/edit-post/:slug",
+            element: <PostEdit />,
+          }
         ],
       },
     ],
