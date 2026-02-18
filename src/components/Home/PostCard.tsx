@@ -18,11 +18,11 @@ export interface Post {
   content: string;
   slug: string;
   created_at: string;
+  author_id: string;
   profiles: {
     full_name: string;
   } | null;
 }
-
 
 export function PostCard({ post }: { post: Post }) {
   return (

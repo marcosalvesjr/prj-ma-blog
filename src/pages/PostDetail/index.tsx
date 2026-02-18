@@ -3,18 +3,40 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { ArrowLeft, Calendar, User, Clock, Share2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  User,
+  Clock,
+  Share2,
+  Pencil,
+  Trash,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import type { Post } from "@/components/Home";
-
-
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
 
 export default function PostDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [post, setPost] = useState<Post | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleDelete = async () => {
+    if (!window.confirm("Tem certeza que deseja excluir este artigo?")) return;
+
+    const { error } = await supabase.from("posts").delete().eq("id", post?.id);
+
+    if (error) {
+      toast.error("Erro ao deletar: " + error.message);
+    } else {
+      toast.success("Post removido com sucesso!");
+      navigate("/");
+    }
+  };
 
   useEffect(() => {
     async function fetchPost() {
@@ -52,7 +74,7 @@ export default function PostDetail() {
   }
 
   if (!post) return null;
-
+  console.log("INFO POST: ", post);
   return (
     <div className="min-h-screen bg-white">
       {/* Barra de Navegação Superior / Header do Post */}
@@ -74,7 +96,9 @@ export default function PostDetail() {
           <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
-                {post.profiles?.full_name.charAt(0) || <User className="h-4 w-4" />}
+                {post.profiles?.full_name.charAt(0) || (
+                  <User className="h-4 w-4" />
+                )}
               </div>
               <span className="font-semibold text-gray-900">
                 {post.profiles?.full_name || "Autor do Blog"}
@@ -95,8 +119,34 @@ export default function PostDetail() {
         </div>
       </div>
 
+      {user && user.id === post?.author_id && (
+        <div className="max-w-3xl mx-auto px-4">
+          <div className="flex gap-2 bg-gray-50 py-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate(`/edit-post/${post?.slug}`)}
+              className="text-blue-600 border-blue-100 hover:bg-blue-50"
+            >
+              <Pencil className="h-4 w-4 mr-2" />
+              Editar
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDelete}
+              className="text-red-600 border-red-100 hover:bg-red-50"
+            >
+              <Trash className="h-4 w-4 mr-2" />
+              Excluir
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Conteúdo do Artigo */}
       <main className="max-w-3xl mx-auto px-4 py-12">
+        
         <article className="prose prose-blue max-w-none">
           {/* white-space: pre-wrap garante que as quebras de linha do banco sejam respeitadas */}
           <p className="text-xl leading-relaxed text-gray-700 whitespace-pre-wrap">
